@@ -4,16 +4,6 @@
 
 The Block Vecchia Algorithm is a computational method for efficient spatial statistics calculations, designed for high-performance computing environments. This project includes implementations for both estimation and prediction tasks, leveraging GPU acceleration and optimized libraries.
 
-Our computational harness is built using:
-- GCC version 10.2.0 (12.2.0)
-- CUDA version 11.4 (11.8)
-- Intel MKL 2022.2.1
-- MAGMA 2.7.2
-- GSL 2.6
-- NLopt v2.7.1 optimization libraries
-- OpenMP 4.1.0 or later (for multi-threading support)
-- BLAS (Basic Linear Algebra Subprograms)
-
 ## Installation and Compilation
 
 ### Prerequisites
@@ -47,12 +37,11 @@ This will create the necessary executables in the `bin` directory.
 
 ## Usage
 
-### Estimation
-
 The main executable for the Block Vecchia Algorithm estimation is `test_dvecchia_batch`. Here are some example use cases:
 
 1. View Help Information:
 ```bash
+cd estimation
 ./bin/test_dvecchia_batch --help
 ```
 
@@ -64,23 +53,6 @@ The main executable for the Block Vecchia Algorithm estimation is `test_dvecchia
 3. Simulated Data or Real Dataset:
 ```bash
 ./bin/test_dvecchia_batch --ikernel ?:?:? --vecchia_bc 300 --kernel univariate_matern_stationary_no_nugget --num_loc 20000 --vecchia_cs 150 --knn --xy_path /path/to/locations --obs_path /path/to/observations
-```
-
-Optional parameters:
-```
---kernel_init 0.1:0.1:0.1 --tol 4 --omp_threads 40
-```
-
-### Prediction
-
-The main executable for Block Vecchia Prediction is `predict`. Basic usage:
-
-```bash
-./bin/predict --train_locs <train_locations_file> --test_locs <test_locations_file> \
---train_data <train_data_file> --test_data <test_data_file> \
--n <num_samples> -k <num_clusters> -m <block_size> \
---scale_factor <scale> --theta <theta_params> \
---distance_metric <metric> --num_threads <threads> --seed <seed>
 ```
 
 ## Output
@@ -97,9 +69,9 @@ This project is licensed under the terms of the Apache License 2.0. See the LICE
 
 The following scripts and notebooks are used to generate the corresponding figures. In our experiments, we use 40 CPU cores (Intel(R) Xeon(R) Gold 6230R CPU @ 2.10GHz) and NVIDIA V100 GPU 32GB.
 
-Step 0: choose estimation or prediction, and download the bash and jupyter notebooks.
-Step 1: use the bash script to run the experiments.
-Step 2: use the notebook to process the results and generate the figures.
+ - Step 0: choose estimation or prediction, and download the bash and jupyter notebooks.
+ - Step 1: use the bash script to run the experiments.
+ - Step 2: use the notebook to process the results and generate the figures.
 
 **Note:**
 - The bash scripts and jupyter notebooks should be in the same folder with `estimation` or `prediction`.

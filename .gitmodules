@@ -1,6 +1,0 @@
-[submodule "estimation"]
-	path = estimation
-	url = https://github.com/paper-code1/blockVecchia.git
-[submodule "prediction"]
-	path = prediction
-	url = https://github.com/paper-code1/blockVecchia-prediction.git

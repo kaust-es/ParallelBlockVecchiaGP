@@ -1092,6 +1092,41 @@ void core_dcmg(double* A, int m, int n,
 	gsl_set_error_handler_off();
 }
 
+void core_dcmg_nugget(double* A, int m, int n,
+		// int m0, int n0, 
+		location* l1,
+		location* l2, const double* localtheta, int distance_metric, int z_flag, double dist_scale) {
+
+	int i, j;
+	int i0 = 0;
+	int j0 = 0;
+	double x0, y0, z0;
+	double expr = 0.0;
+	double con = 0.0;
+	double sigma_square = localtheta[0];// * localtheta[0];
+	double nugget = localtheta[3];
+
+	con = pow(2, (localtheta[2] - 1)) * tgamma(localtheta[2]);
+	con = 1.0 / con;
+	con = sigma_square * con;
+	for (i = 0; i < m; i++) {
+		j0 = 0;
+		for (j = 0; j < n; j++) {
+			expr = calculateDistance(l1, l2, i0, j0, distance_metric, z_flag) / localtheta[1];
+			expr /= dist_scale;
+			if (expr == 0)
+				A[i + j * m] = sigma_square + nugget /*+ 1e-4*/;
+			else
+				A[i + j * m] = con * pow(expr, localtheta[2]) 
+					* gsl_sf_bessel_Knu(localtheta[2], expr); // Matern Function
+			j0++;
+		}
+		// fprintf(stderr, "%lf %lf \n", l1->x[i0], l1->y[i0]);
+		i0++;
+	}
+	gsl_set_error_handler_off();
+}
+
 /*****************************************************************************
  *
  *  core_ng_dcmg - TODO

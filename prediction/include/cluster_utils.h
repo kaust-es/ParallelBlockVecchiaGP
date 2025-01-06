@@ -24,6 +24,9 @@ public:
     std::vector<T> predictedValues;
     std::vector<std::vector<T>> predictedUncertainties;
     T mspe;
+    T mape;
+    T picp;
+    T mpiw;
     int clusterIndex;
     // calcuate the mean and variance of the conditional simulation
     std::vector<double> mean;
@@ -31,7 +34,7 @@ public:
 
 
     // constructor and destructor
-    ClusterData(int dim): numPoints(0), dimension(dim), mspe(0), mean(0), variance(0) {};
+    ClusterData(int dim): numPoints(0), dimension(dim), mspe(0), mape(0), picp(0), mpiw(0), mean(0), variance(0) {};
     ~ClusterData() {};
 
     void generateCovarianceMatrix(const std::vector<T>& theta, int distance_metric, const double scale_factor=1.0);

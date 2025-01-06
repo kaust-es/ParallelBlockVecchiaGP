@@ -12,4 +12,6 @@ std::vector<std::vector<double>> loadCSV(const std::string& filename, int dim);
 void saveClusterInfo(const std::vector<ClusterData>& clusters, const std::vector<Point>& centroids, const std::string& filename);
 
 void writeResultsToCSV(const std::vector<ClusterData>& clusters, const std::vector<double>& theta, double mspe, int k, int m, int seed);
+
+void writeSummaryStatisticsToCSV(double mspe, double mape, double picp, double mpiw, int k, int m, int seed);
 #endif

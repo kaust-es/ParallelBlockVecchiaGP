@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     ("num_threads", "Number of threads", cxxopts::value<int>()->default_value("20"))
     ("dim", "Dimension of the location data (2D or 3D)", cxxopts::value<int>()->default_value("3"))
     ("kmeans_iter", "Number of iterations for kmeans", cxxopts::value<int>()->default_value("50"))
-    ("theta", "Theta for the covariance matrix, e.g., 1.0,0.5,0.1, no space between the numbers", cxxopts::value<std::vector<double>>()->default_value("1.0, 0.5, 0.1"))
+    ("theta", "Theta for the covariance matrix, e.g., 1.0,0.5,0.1,0.0 no space between the numbers", cxxopts::value<std::vector<double>>()->default_value("1.0,0.5,0.1,0.0"))
     ("distance_metric", "Distance metric (1 for earth, 2 for euclidean)", cxxopts::value<int>()->default_value("2"))
     ("scale_factor", "Scale factor for the covariance matrix, For real 2D dataset (e.g., wind data, 2523.64 or soil data, 9348.317", cxxopts::value<double>()->default_value("1.0"))
     ("conditional_sim", "number of conditional simulations, e.g., 1000", cxxopts::value<int>()->default_value("1000"))
@@ -67,6 +67,13 @@ int main(int argc, char *argv[])
     std::cout << "n: " << n << std::endl;
     std::cout << "k: " << k << std::endl;
     std::cout << "m: " << m << std::endl;
+    // print the theta
+    std::cout << "theta: ";
+    for (size_t i = 0; i < theta.size(); i++)
+    {
+        std::cout << theta[i] << " ";
+    }
+    std::cout << std::endl;
 
     omp_set_num_threads(omp_numthreads);
 
@@ -92,25 +99,11 @@ int main(int argc, char *argv[])
     saveAllClustersToCSV(clusters, "cluster_data.csv");
 
     // for each cluster, generate the covariance matrix
-// #pragma omp parallel for num_threads(omp_numthreads) schedule(dynamic)
+#pragma omp parallel for num_threads(omp_numthreads) schedule(dynamic)
     for (int i = 0; i < int(clusters.size()); i++)
     {
         clusters[i].generateCovarianceMatrix(theta, distance_metric, scale_factor);
         clusters[i].krigingPredict();
-    }
-
-    // calculate the mspe in total
-    double mspe = 0.0;
-    for (int i = 0; i < int(clusters.size()); i++)
-    {
-        mspe += clusters[i].mspe * clusters[i].numPoints;
-    }
-    mspe /= n;
-    if (mspe <= 0 || std::isnan(mspe)){
-        std::cout << "MSPE calculation error" << std::endl;
-        std::cout << "MSPE: " << mspe << std::endl;
-    }else{
-        std::cout << "MSPE: " << mspe << std::endl;   
     }
 
     // conditional simulation
@@ -120,6 +113,35 @@ int main(int argc, char *argv[])
         clusters[i].conditionalSimulate(conditional_sim);
     }
 
+    // calculate the mspe in total
+    double mspe = 0.0;
+    double mape = 0.0;
+    double picp = 0.0;
+    double mpiw = 0.0;
+    for (int i = 0; i < int(clusters.size()); i++)
+    {
+        mspe += clusters[i].mspe * clusters[i].numPoints;
+        mape += clusters[i].mape * clusters[i].numPoints;
+        picp += clusters[i].picp * clusters[i].numPoints;
+        mpiw += clusters[i].mpiw * clusters[i].numPoints;
+    }
+    mspe /= n;
+    mape /= n;
+    picp /= n;
+    mpiw /= n;
+    if (mspe <= 0 || std::isnan(mspe) || mape <= 0 || std::isnan(mape)){
+        std::cout << "MSPE/MAPE calculation error" << std::endl;
+        std::cout << "MSPE: " << mspe << std::endl;
+        std::cout << "MAPE: " << mape << std::endl;
+    }else{
+        std::cout << "MSPE: " << mspe << std::endl;   
+        std::cout << "MAPE: " << mape << std::endl;
+    }
+
+    // write summary statistics to csv
+    writeSummaryStatisticsToCSV(mspe, mape, picp, mpiw, k, m, seed);
+
+    // write full log 
     writeResultsToCSV(clusters, theta, mspe, k, m, seed);
 
     return 0;

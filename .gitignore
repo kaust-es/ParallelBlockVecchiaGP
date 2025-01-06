@@ -1,0 +1,32 @@
+# Ignore Jupyter notebooks in the estimation directory
+estimation/*.ipynb
+.vscode/
+
+# Ignore shell scripts in the prediction directory
+prediction/*.sh
+prediction/*.ipynb
+prediction/*.txt
+prediction/*.csv
+
+# Ignore text files in the estimation directory
+estimation/*.txt
+estimation/*.sh
+estimation/*.ipynb
+
+# Ignore binary, figure, log, and object files in the estimation directory
+estimation/bin/
+estimation/fig/
+estimation/log/
+estimation/obj/
+estimation/dataset-competition/
+
+# Ignore binary, figure, log, and object files in the prediction directory
+prediction/bin/
+prediction/fig/
+prediction/log/
+prediction/obj/
+prediction/wget-log/
+prediction/dataset-competition/
+prediction/log_backup/
+prediction/simu_ds/
+prediction/wget-log/

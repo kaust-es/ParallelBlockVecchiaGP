@@ -132,6 +132,16 @@ T llh_Xvecchia_batch(unsigned n, const T *localtheta, T *grad, void *f_data)
                                        loc_batch,
                                        localtheta, data->distance_metric);
         }
+        else if (data->kernel == 5)
+        {
+            core_dcmg_nugget(h_Cov + batchNumSquareAccum[i],
+                      batchNum[i], // each single  batch size
+                      batchNum[i],
+                      loc_batch, // starting of the locations_new
+                      loc_batch,
+                      localtheta, data->distance_metric,
+                      z_flag, data->dist_scale);
+        }
         else
         {
             core_dcmg(h_Cov + batchNumSquareAccum[i],
@@ -139,7 +149,7 @@ T llh_Xvecchia_batch(unsigned n, const T *localtheta, T *grad, void *f_data)
                       batchNum[i],
                       loc_batch, // starting of the locations_new
                       loc_batch,
-                      localtheta, data->distance_metric, 
+                      localtheta, data->distance_metric,
                       z_flag, data->dist_scale);
         }
         // printVectorCPU(data->Cm, data->h_obs_new, data->ldc, i);
@@ -189,6 +199,19 @@ T llh_Xvecchia_batch(unsigned n, const T *localtheta, T *grad, void *f_data)
                                            cs, batchNum[i],
                                            loc_batch_con,
                                            loc_batch, localtheta, data->distance_metric);
+            }
+            else if (data->kernel == 5)
+            {
+                core_dcmg_nugget(h_Cov_cross + cs * batchNumAccum[i],
+                                  cs, batchNum[i],
+                                  loc_batch_con,
+                                  loc_batch, localtheta, data->distance_metric,
+                                  z_flag, data->dist_scale);
+                core_dcmg_nugget(h_Cov_conditioning + i * cs * cs,
+                                  cs, cs,
+                                  loc_batch_con,
+                                  loc_batch_con, localtheta, data->distance_metric,
+                                  z_flag, data->dist_scale);
             }
             else
             {
@@ -504,7 +527,7 @@ T llh_Xvecchia_batch(unsigned n, const T *localtheta, T *grad, void *f_data)
             printf("%dth Model Parameters (Variance, range, smoothness): (%1.8lf, %1.8lf, %1.8lf) -> Loglik: %.18lf \n",
                    data->iterations, localtheta[0], localtheta[1], localtheta[2], llk);
         }
-        else if (data->kernel == 3)
+        else if (data->kernel == 3 || data->kernel == 5)
         {
             printf("%dth Model Parameters (Variance, range, smoothness, nugget): (%1.8lf, %1.8lf, %1.8lf, %1.8lf) -> Loglik: %.18lf \n",
                    data->iterations, localtheta[0], localtheta[1], localtheta[2], localtheta[3], llk);

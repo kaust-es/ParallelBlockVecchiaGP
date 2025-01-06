@@ -42,6 +42,7 @@ void core_dcmg(std::vector<std::vector<T>>& locs1,
                const double scale_factor) {
     double expr = 0.0, con = 0.0;
     double sigma_square = localtheta[0];
+    double nugget = localtheta[3];
     int length1 = locs1.size();
     int length2 = locs2.size();
 
@@ -61,7 +62,7 @@ void core_dcmg(std::vector<std::vector<T>>& locs1,
             }
             expr /= scale_factor;
             if (expr == 0.0) {
-                A[i][j] = sigma_square;  // Diagonal elements
+                A[i][j] = sigma_square + nugget;  // Diagonal elements
             } else {
                 // Matern covariance function
                 A[i][j] = con * pow(expr, localtheta[2]) * gsl_sf_bessel_Knu(localtheta[2], expr);
@@ -173,8 +174,10 @@ void ClusterData::krigingPredict() {
     // 6. calculate the mspe
     for (int i = 0; i < size_cluster; ++i) {
         mspe += pow(observations[i] - predictedValues[i], 2);
+        mape += abs(observations[i] - predictedValues[i]);
     }
     mspe /= size_cluster;
+    mape /= size_cluster;
     if (mspe <= 0 || std::isnan(mspe)) {
         std::cout << "mspe: " << mspe << std::endl;
         std::cout << "number of cluster: " << size_cluster << std::endl;
@@ -254,6 +257,23 @@ void ClusterData::conditionalSimulate(int m_replicates) {
     for (int i = 0; i < numPoints; ++i) {
         variance[i] /= m_replicates;
     }
+    
+    // Calculate the predicted interval coverage percentage (PICP)
+    for (int i = 0; i < numPoints; ++i) {
+        double lower_bound = mean[i] - 1.96 * sqrt(variance[i]);
+        double upper_bound = mean[i] + 1.96 * sqrt(variance[i]);
+        if (observations[i] >= lower_bound && observations[i] <= upper_bound) {
+            picp += 1.0;
+        }
+    }
+    picp = (picp / numPoints) * 100.0;
+
+    // Calculate the mean predicted interval width (MPIW)
+    for (int i = 0; i < numPoints; ++i) {
+        double interval_width = 2 * 1.96 * sqrt(variance[i]);
+        mpiw += interval_width;
+    }
+    mpiw /= numPoints;
 
     // free the memory
     for (int i = 0; i < m_replicates; ++i) {

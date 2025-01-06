@@ -173,7 +173,7 @@ void saveLogFileSum(int iterations, double* theta, double max_llh, double whole_
                 << ", " << whole_time << std::endl;
         outfile.close();
     }
-    else if (opts.kernel == 3)
+    else if (opts.kernel == 3 || opts.kernel == 5)
     {
         printf("Model Parameters (Variance, range, smoothness, nugget): (%.8f, %.8f, %.8f, %.8f) -> Loglik: %.18f \n",
                theta[0], theta[1], theta[2], theta[3], max_llh);

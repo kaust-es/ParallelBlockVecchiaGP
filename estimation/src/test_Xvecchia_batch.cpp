@@ -160,7 +160,7 @@ int test_Xvecchia_batch(Vecchia_opts &opts, T alpha)
             localtheta_initial[1] = opts.beta;
             localtheta_initial[2] = opts.nu;
         }
-        else if (opts.kernel == 3)
+        else if (opts.kernel == 3 || opts.kernel == 5)
         {
             localtheta_initial[0] = opts.sigma;
             localtheta_initial[1] = opts.beta;
@@ -217,7 +217,7 @@ int test_Xvecchia_batch(Vecchia_opts &opts, T alpha)
             localtheta_initial[1] = opts.beta_init;
             localtheta_initial[2] = opts.nu_init;
         }
-        else if (opts.kernel == 3)
+        else if (opts.kernel == 3 || opts.kernel == 5)
         {
             localtheta_initial[0] = opts.sigma_init;
             localtheta_initial[1] = opts.beta_init;
@@ -717,6 +717,11 @@ int test_Xvecchia_batch(Vecchia_opts &opts, T alpha)
         lb[6] = 0.;  // aux parameter
         ub[6] = 0.;
     }
+    else if (opts.kernel == 5 || opts.kernel == 3)
+    {
+        ub[3] = 1.0; // nugget
+        lb[3] = 0.0;
+    }
     nlopt_set_lower_bounds(opt, lb);
     nlopt_set_upper_bounds(opt, ub);
 
@@ -726,6 +731,31 @@ int test_Xvecchia_batch(Vecchia_opts &opts, T alpha)
 
     // Variable to store the minimum objective value
     double maxf;
+    // print dist scale
+    fprintf(stderr, "dist scale: %g\n", opts.dist_scale);
+    // print optimization configuration
+    fprintf(stderr, "Optimization configuration: \n");
+    fprintf(stderr, "tol: %g, maxiter: %d\n", opts.tol, opts.maxiter);
+    // print the initial parameters
+    fprintf(stderr, "Initial parameters: ");
+    for (int i = 0; i < opts.num_params; i++)
+    {
+        fprintf(stderr, "%g ", localtheta_initial[i]);
+    }
+    fprintf(stderr, "\n");
+    // print upper and lower bounds
+    fprintf(stderr, "Upper bounds: ");
+    for (int i = 0; i < opts.num_params; i++)
+    {
+        fprintf(stderr, "%g ", ub[i]);
+    }
+    fprintf(stderr, "\n");
+    fprintf(stderr, "Lower bounds: ");
+    for (int i = 0; i < opts.num_params; i++)
+    {
+        fprintf(stderr, "%g ", lb[i]);
+    }
+    fprintf(stderr, "\n");
 
     // Run the optimizer
     if (nlopt_optimize(opt, localtheta_initial, &maxf) < 0)
@@ -738,7 +768,7 @@ int test_Xvecchia_batch(Vecchia_opts &opts, T alpha)
         {
             printf("Found maximum at f(%g, %g, %g) = %0.10g\n", localtheta_initial[0], localtheta_initial[1], localtheta_initial[2], maxf);
         }
-        else if (opts.kernel == 3)
+        else if (opts.kernel == 3 || opts.kernel == 5)
         {
             printf("Found maximum at f(%g, %g, %g, %g) = %0.10g\n", localtheta_initial[0], localtheta_initial[1], localtheta_initial[2], localtheta_initial[3], maxf);
         }

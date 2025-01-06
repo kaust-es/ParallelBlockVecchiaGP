@@ -491,6 +491,13 @@ extern "C" int parse_opts(int argc, char **argv, Vecchia_opts *opts)
                 opts->num_params = 3; // Set appropriate values for the 'matern' kernel
                 opts->p = 1;          // You can modify this as per the requirement for 'matern'
             }
+            else if (strcmp(kernel_str, "univariate_matern_stationary_nugget") == 0)
+            {
+                fprintf(stderr, "You are using the Matern Kernel with nugget (sigma^2, range, smooth, nugget)!\n");
+                opts->kernel = 5;     // Change as per your requirement for 'powexp'
+                opts->num_params = 4; // Set appropriate values for the 'powexp' kernel
+                opts->p = 1;          // Modify as needed for 'powexp'
+            }
             else if (strcmp(kernel_str, "univariate_powexp_stationary_no_nugget") == 0)
             {
                 fprintf(stderr, "You are using the Power exponential Kernel (sigma^2, range, smooth)!\n");

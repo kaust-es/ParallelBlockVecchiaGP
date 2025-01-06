@@ -61,6 +61,18 @@ void saveClusterInfo(const std::vector<ClusterData>& clusters, const std::vector
     file.close();
 }
 
+void writeSummaryStatisticsToCSV(double mspe, double mape, double picp, double mpiw, int k, int m, int seed){
+    std::ofstream csvFile;
+    std::string filename = "log/summary_statistics_k_" + std::to_string(k) + "_m_" + std::to_string(m) + ".csv";
+    bool fileExists = std::filesystem::exists(filename);
+    csvFile.open(filename, std::ios_base::app);
+    if (!fileExists) {
+        csvFile << "k,m,seed,mspe,mape,picp,mpiw\n";
+    }
+    csvFile << k << "," << m << "," << seed << "," << mspe << "," << mape << "," << picp << "," << mpiw << "\n";
+    csvFile.close();
+}
+
 void writeResultsToCSV(const std::vector<ClusterData>& clusters, const std::vector<double>& theta, double mspe, int k, int m, int seed) {
     // save the mean and variance of the conditional simulation as a csv file
     // create log folder
@@ -68,7 +80,12 @@ void writeResultsToCSV(const std::vector<ClusterData>& clusters, const std::vect
     if (!std::filesystem::exists(log_folder)) {
         std::filesystem::create_directory(log_folder);
     }
-    std::ofstream csvFile("log/conditional_simulation_k_" + std::to_string(k) + "_m_" + std::to_string(m) + "_theta_" + std::to_string(theta[0]) + "_" + std::to_string(theta[1]) + "_" + std::to_string(theta[2]) + "_seed_" + std::to_string(seed) + ".csv");
+    std::ofstream csvFile;
+    if (theta.size() == 3) {
+        csvFile.open("log/conditional_simulation_k_" + std::to_string(k) + "_m_" + std::to_string(m) + "_theta_" + std::to_string(theta[0]) + "_" + std::to_string(theta[1]) + "_" + std::to_string(theta[2]) + "_seed_" + std::to_string(seed) + ".csv");
+    } else {
+        csvFile.open("log/conditional_simulation_k_" + std::to_string(k) + "_m_" + std::to_string(m) + "_theta_" + std::to_string(theta[0]) + "_" + std::to_string(theta[1]) + "_" + std::to_string(theta[2]) + "_" + std::to_string(theta[3]) + "_seed_" + std::to_string(seed) + ".csv");
+    }
     // header
     csvFile << "smean,svariance,x,y,z,mspe,true_value\n";
     for (const auto& cluster : clusters) {

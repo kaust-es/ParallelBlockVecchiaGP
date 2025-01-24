@@ -95,22 +95,23 @@ Lastly, please use the `./test_kl_plot.ipynb` to visualize the results. Predicti
 
 | Script/Notebook | Corresponding Figure(s) | Training Time | Comments |
 | --------------- | ------------------------ | ------------- | -------- |
-| `cluster.sh` / `cluster-reordering.ipynb` | Figure 2 | Instantly | |
-| `memory.ipynb` | Figure 4 | Instantly |
-| `test_kl.sh` / `test_kl_plot.ipynb` | Figure 5(a), Figures S1, S2, S3 | 30 mins |
-| `test_kl.sh` / `test_kl_plot_blockcount_cs.ipynb` | Figure 5(b) | 30 mins |
-| `test_kl.sh` / `test_kl_plot.ipynb` | Figure 6 | 30 mins |
-| `test_kl.sh` / `test_kl_plot_time.ipynb` | Figure 7, Figure S4 | 30 mins |
-| `test_simulation.sh` / `test_simulation.ipynb` | Figure 8, Figures S6, S7, S8 | 28 hours | |
-| `real_soil.sh` / `real_wind.sh` / `real_dataset_soil_wind.ipynb` | Figures 11, 12 | 3 hours | set folder in Jupyter notebook for soil/wind results |
-| `real_windspeed_3D.sh` / `real_windspeed_3D.ipynb` | Figure 13 (a), (b), (c) | 12 hours | |
-| `test_kl_largeN.sh` / `test_kl_largeN.ipynb` / `test_kl_largeN_time.ipynb` | Figure S5 | 15 mins | |
-| `real_soil_full.sh` / `real_dataset_soil-2m.ipynb` | Figure S11 | 24 hours |
+| `estimation/cluster.sh` / `estimation/cluster-reordering.ipynb` | Figure 2 | Instantly | |
+| `estimation/memory.ipynb` | Figure 4 | Instantly |
+| `estimation/test_kl.sh` / `estimation/test_kl_plot.ipynb` | Figure 5(a), Figures S1, S2, S3 | 30 mins |
+| `estimation/test_kl.sh` / `estimation/test_kl_plot_blockcount_cs.ipynb` | Figure 5(b) | 30 mins |
+| `estimation/test_kl.sh` / `estimation/test_kl_plot.ipynb` | Figure 6 | 30 mins |
+| `estimation/test_kl.sh` / `estimation/test_kl_plot_time.ipynb` | Figure 7, Figure S4 | 30 mins |
+| `estimation/test_simulation.sh` / `estimation/test_simulation.ipynb` | Figure 8, Figures S6, S7, S8 | 28 hours | |
+| `estimation/real_soil.sh` / `estimation/real_wind.sh` / `estimation/real_dataset_soil_wind.ipynb` | Figures 11, 12 | 3 hours | set folder in Jupyter notebook for soil/wind results |
+| `estimation/real_windspeed_3D.sh` / `estimation/real_windspeed_3D.ipynb` | Figure 13 (a), (b), (c) | 12 hours | |
+| `estimation/test_kl_largeN.sh` / `estimation/test_kl_largeN.ipynb` / `estimation/test_kl_largeN_time.ipynb` | Figure S5 | 15 mins | |
+| `estimation/real_soil_full.sh` / `estimation/real_dataset_soil-2m.ipynb` | Figure S11 | 24 hours |
+| `estimation/test_kl_small.sh` / | Figure S14, S15, S16 | 10 mins |
 
 ##### Meta info for Prediction
 
 | Script/Notebook | Corresponding Figure(s) | Training Time |
 | --------------- | ------------------------ | ------------- |
-| `pred_interval_simu.sh` / `plot_simu_pred.ipynb` | Figure 9, Figure S9 | 3.5 hours |
-| `prediction_3d.sh` / `plot_realdata_pred.ipynb` | Figure 13 (d) | 10 hours |
-| `prediction_2d.sh` / `plot_realdata_pred.ipynb` | Figures S12, S13 | 7.5 hours |
+| `prediction/pred_interval_simu.sh` / `prediction/plot_simu_pred.ipynb` | Figure 9, Figure S9 | 3.5 hours |
+| `prediction/prediction_3d.sh` / `prediction/plot_realdata_pred.ipynb` | Figure 13 (d) | 10 hours |
+| `prediction/prediction_2d.sh` / `prediction/plot_realdata_pred.ipynb` | Figures S12, S13 | 7.5 hours |

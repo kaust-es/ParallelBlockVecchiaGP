@@ -2,7 +2,8 @@
 
 ## Introduction
 
-The Block Vecchia Algorithm is a computational method for efficient spatial statistics calculations, designed for high-performance computing environments. This project includes implementations for both estimation and prediction tasks, leveraging GPU acceleration and optimized libraries.
+The Block Vecchia Algorithm is a computational method for efficient spatial statistics calculations, designed for high-performance computing environments. This project includes implementations for both estimation and prediction tasks, leveraging GPU acceleration and optimized libraries. [paper: Block Vecchia Approximation for Scalable and Efficient Gaussian Process Computations
+](https://www.tandfonline.com/doi/full/10.1080/00401706.2025.2475784)
 
 ## Installation and Compilation
 

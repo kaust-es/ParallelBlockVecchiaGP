@@ -1,5 +1,19 @@
 # Block Vecchia Algorithm for Estimation and Prediction
 
+## ⚠️ Project Notice
+
+**Important: Active development has moved to a new repository:**
+
+👉 **[ExaGeoStatCPP](https://github.com/kaust-es/ParallelVecchiaGP)**
+
+The codebase has been migrated from C to C++ as part of this transition.
+
+The new version also includes support for R package installation.
+
+This repository is now archived and no longer maintained.
+
+---
+
 ## Introduction
 
 The Block Vecchia Algorithm is a computational method for efficient spatial statistics calculations, designed for high-performance computing environments. This project includes implementations for both estimation and prediction tasks, leveraging GPU acceleration and optimized libraries. [paper: Block Vecchia Approximation for Scalable and Efficient Gaussian Process Computations

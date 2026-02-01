@@ -6,10 +6,6 @@
 
 👉 **[ParallelVecchiaGP](https://github.com/kaust-es/ParallelVecchiaGP)**
 
-The codebase has been migrated from C to C++ as part of this transition.
-
-The new version also includes support for R package installation.
-
 This repository is now archived and no longer maintained.
 
 ---
